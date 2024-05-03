@@ -24,12 +24,14 @@ func (c *Config) Save() {
 	new_data, _ := json.Marshal(c)
 	new_string := string(new_data)
 
-	configFile, _ := os.OpenFile(configFileName, os.O_RDWR|os.O_CREATE, 0666)
+	configFile, _ := os.OpenFile(configFileName, os.O_RDONLY|os.O_CREATE, 0666)
 	defer configFile.Close()
 
 	old_data, _ := io.ReadAll(configFile)
 	old_string := string(old_data)
 	if new_string != old_string {
+		configFile, _ := os.OpenFile(configFileName, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
+		defer configFile.Close()
 		configFile.Write(new_data)
 	}
 }
