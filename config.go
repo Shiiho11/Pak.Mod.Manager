@@ -24,7 +24,7 @@ func (c *Config) Save() {
 	new_data, _ := json.Marshal(c)
 	new_string := string(new_data)
 
-	configFile, _ := os.OpenFile(configFileName, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0666)
+	configFile, _ := os.OpenFile(configFileName, os.O_RDWR|os.O_CREATE, 0666)
 	defer configFile.Close()
 
 	old_data, _ := io.ReadAll(configFile)
