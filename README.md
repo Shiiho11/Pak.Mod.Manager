@@ -7,7 +7,7 @@ A small tool based on GO [walk](https://github.com/lxn/walk) for configuring whe
 https://github.com/Shiiho11/Pak.Mod.Manager/releases
 
 ## Using
-Please place the executable program in a separate folder, the program will generate `config. json` to save the configuration.
+Please place the executable program in a separate folder, the program will generate `config.json` to save the configuration.
 
 The `Mod Config List` on the left can create, select, and delete configurations. The `Mod File Config` on the right is the specific content of each configuration.
 

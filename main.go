@@ -30,21 +30,41 @@ func main() {
 
 	mainWindow = MainWindow{
 		Title:  "Pak Mod Manager",
-		Size:   Size{Width: 700, Height: 500},
+		Size:   Size{Width: 800, Height: 600},
 		Font:   Font{Family: "Arial", PointSize: 10},
 		Layout: Grid{Rows: 1},
 		Children: []Widget{
 			Composite{
 				Layout:  VBox{},
-				MaxSize: Size{Width: 150},
+				MaxSize: Size{Width: 200},
 				Children: []Widget{
 					Label{
 						Text: "Mod Config List",
 						Font: Font{Family: "Arial", PointSize: 13, Bold: true},
 					},
-					PushButton{
-						Text:      "New Config",
-						OnClicked: newConfig,
+					Composite{
+						Layout: HBox{},
+						Children: []Widget{
+							PushButton{
+								Text:      "New Config",
+								MinSize:   Size{Width: 120},
+								MaxSize:   Size{Width: 120},
+								OnClicked: newConfig,
+							},
+							HSpacer{
+								MinSize: Size{Width: 5},
+							},
+							PushButton{
+								Text:      "↑",
+								MaxSize:   Size{Width: 25},
+								OnClicked: itemUp,
+							},
+							PushButton{
+								Text:      "↓",
+								MaxSize:   Size{Width: 25},
+								OnClicked: itemDown,
+							},
+						},
 					},
 					ListBox{
 						AssignTo:              &modConfigLB,
@@ -193,8 +213,31 @@ func newConfig() {
 	modConfigLB.SetCurrentIndex(len(config.ModConfigSlice) - 1)
 }
 
+func itemUp() {
+	index := modConfigLB.CurrentIndex()
+	if index <= 0 {
+		return
+	}
+	config.ModConfigSlice[index-1], config.ModConfigSlice[index] = config.ModConfigSlice[index], config.ModConfigSlice[index-1]
+	modConfigLB.SetModel(modConfigListModel)
+	modConfigLB.SetCurrentIndex(index - 1)
+}
+
+func itemDown() {
+	index := modConfigLB.CurrentIndex()
+	if index >= (len(config.ModConfigSlice) - 1) {
+		return
+	}
+	config.ModConfigSlice[index], config.ModConfigSlice[index+1] = config.ModConfigSlice[index+1], config.ModConfigSlice[index]
+	modConfigLB.SetModel(modConfigListModel)
+	modConfigLB.SetCurrentIndex(index + 1)
+}
+
 func delectConfig() {
 	index := modConfigLB.CurrentIndex()
+	if index <= 0 {
+		return
+	}
 	config.ModConfigSlice = append(config.ModConfigSlice[:index], config.ModConfigSlice[index+1:]...)
 	modConfigLB.SetModel(modConfigListModel)
 	modConfigLB.SetCurrentIndex(max(index-1, 0))
